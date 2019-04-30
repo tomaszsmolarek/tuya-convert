@@ -3,6 +3,11 @@
 # Source config
 . ../config.txt
 
+# On Kali 2019.1a some other processes are using WiFi
+airmon-ng check kill
+airmon-ng check kill
+# yes, run twice
+
 if test -d /etc/NetworkManager; then
 	echo "Backing up NetworkManager.cfg..."
 	sudo cp /etc/NetworkManager/NetworkManager.conf /etc/NetworkManager/NetworkManager.conf.backup
@@ -96,3 +101,9 @@ sudo iptables --flush
 sudo iptables --flush -t nat
 sudo iptables --delete-chain
 sudo iptables --table nat --delete-chain
+
+
+
+# On Kali 2019.1a routes are gone, restore
+sudo ip route add 255.255.255.255 dev $WLAN
+sudo route add default gw 10.42.42.1
